@@ -31,7 +31,7 @@ glacier-streamflow-analysis/
 ```
 
 ## Workflow
-#### Glacier & Climate Extraction (`01_gee_glacier_climate_data.ipynb`)<br>
+#### 1. Glacier & Climate Extraction (`01_gee_glacier_climate_data.ipynb`)
 **Tools:** Google Earth Engine API, Landsat 5/7/8/9, PRISM Climate Data.
 * Processed 40 years of satellite imagery to calculate annual glacier area using NDSI and NIR thresholds.
 * Extracted catchment-scale temperature and precipitation from the PRISM dataset.
@@ -39,15 +39,15 @@ glacier-streamflow-analysis/
 
 ![Coleman Glacier Area](figures/01_Coleman_Glacier_Area_Linear_Retreat_trend.png)
 
-#### Streamflow Processing (`02_streamflow_dataset.ipynb`)<br>
+#### 2. Streamflow Processing (`02_streamflow_dataset.ipynb`)
 **Tools:** dataretrieval (USGS NWIS), statsmodels.
 * Retrieved 40 years of daily discharge data for USGS Gauge 12205000.
 * Performed Augmented Dickey-Fuller (ADF) tests to confirm stationarity for time-series modeling.
 * **Finding:** Baseflow levels dropped significantly after 2021 thermal events (from ~22 m³/s to ~12 m³/s).
 
-![Seasonal Hydrograph Variability](figures\03_Seasonal_Hydrograph_Variability.png)
+![Seasonal Hydrograph Variability](figures/03_Seasonal_Hydrograph_Variability.png)
 
-#### Machine Learning & Predictive Modeling (`03_streamflow_modeling.ipynb`)<br>
+#### 3. Machine Learning & Predictive Modeling (`03_streamflow_modeling.ipynb`)
 **Tools:** scikit-learn, RandomForestRegressor, Multiple Linear Regression.
 * Engineered lagged features to capture "hydrologic memory" (basin storage).
 * Configuration A (Full Feature Set): Achieved an NSE of 0.68, highlighting the importance of previous-day discharge.
@@ -68,9 +68,7 @@ glacier-streamflow-analysis/
 
 > **Note:** **Config A** includes lagged discharge and climate variables, while **Config B** focuses strictly on raw climate drivers and glacier area.
 
-![Hydrograph comparison for Config A](figures\10_hydrograph_comparison_ConfigB.png)
-
----
+![Hydrograph comparison for Config A](figures/10_hydrograph_comparison_ConfigB.png)
 
 ## Key Findings from Modeling
 
@@ -78,6 +76,13 @@ glacier-streamflow-analysis/
 * The Random Forest model consistently outperformed Multiple Linear Regression, particularly in capturing the non-linear relationship between retreating glacier area and baseflow.
 * All models achieved excellent Percent Bias (PBIAS) scores within the ±5% range, which indicates that the models are highly effective at capturing the total volume of water, even when daily peaks vary.
 * While the models are highly accurate at predicting baseflow (low MAE), the RMSE remains relatively high compared to MAE, suggesting the models still struggle to capture high-magnitude spikes caused by extreme weather events.
+
+## Future Recommendations
+To build on this work, future iterations could:
+
+- Add SNOTEL Snow Water Equivalent (SWE) data which could improve the transition from spring freshet to late-summer baseflow.
+- Implement a weighted loss function (e.g., focusing on high-flow RMSE) to better capture rare flood events.
+- Apply the trained Random Forest model to future climate scenarios (CMIP6) to quantify potential streamflow loss by 2050.
 
 ## Getting Started
 
